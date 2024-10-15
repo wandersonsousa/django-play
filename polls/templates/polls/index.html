@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hello, world!</title>
+  </head>
+  <body>
+    <h1>The real Slim Shady!</h1>
+
+    <ul>
+      {% for question in questions %}
+        <li>
+          {{ question.question }} <button id="{{ question.id }}" class="delete-btn">x</button>
+        </li>
+      {% endfor %}
+    </ul>
+
+    <form method="post">
+      <input type="text" name="question" placeholder="Pergunta:" />
+
+      <input type="submit" value="Enviar" />
+    </form>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.delete-btn').forEach(($dlt_btn) => {
+          $dlt_btn.addEventListener('click', async (evt) => {
+            const id = evt.currentTarget.id
+            await deleteQuestion(id)
+            location.reload()
+          })
+        })
+        function deleteQuestion(id) {
+          return fetch(`/polls/${id}/`, {
+            method: 'delete'
+          })
+        }
+      })
+    </script>
+  </body>
+</html>
